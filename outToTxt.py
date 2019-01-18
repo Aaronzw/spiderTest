@@ -7,6 +7,6 @@ def outTxt(str,fileName='C:\SPIDER\out.txt'):
 
 f=open('C:\SPIDER\out.txt', "w+")
 f.write("爬虫test 知乎话题热门数据---by zw \n")
-time=time.localtime(time.time())
-f.write(str(time))
+time=time.asctime(time.localtime(time.time()))
+f.write(str(time)+"\n")
 f.close()

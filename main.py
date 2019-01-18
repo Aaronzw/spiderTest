@@ -1,13 +1,15 @@
 #-*- coding: utf-8 -*-
 
+import urllib
 import urllib2
 import json
 import random
+import time
+from threading import Thread
+import BeautifulSoup
 
 import labelFilter
 import outToTxt
-import time
-from threading import Thread
 def searchQuestionByTopic(topicId,sum=1000000,pageSize=10,pageNum=0):
      #  ua_headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36'}
      #  虚拟header头部
@@ -111,9 +113,30 @@ def searchAnswersByQid(qid,limit=10,pageNum=0):
      # print cnt
      # print res_json["paging"]["totals"]
 
+def searchByKeyWord(keyWord):
+     url="https://www.zhihu.com/search?type=content&q="+urllib.quote(keyWord)
+     headers = [{
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36'},
+          {
+               'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36'},
+          {
+               'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:49.0) Gecko/20100101 Firefox/49.0'}, {
+               'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36'},
+          {
+          }]
+     head_No = random.randint(0, len(headers) - 1)
+     request = urllib2.Request(url, headers=headers[head_No])
+     response=urllib2.urlopen(request)
+     html= response.read()
+     #soup=BeautifulSoup(html,'html.parser')
+     print html
 
 #main函数
-start_time=time.asctime(time.localtime(time.time()))
-searchQuestionByTopic(19955433,sum=100)
-end_time=time.asctime(time.localtime(time.time()))
-print end_time-start_time
+#start_time=time.asctime(time.localtime(time.time()))
+start_time=time.time()
+#searchQuestionByTopic(41047159,sum=100)
+#searchAnswersByQid(41047159)
+#time.sleep(2.03)
+searchByKeyWord("关键字")
+end_time=time.time()
+print "本次任务花费了 "+str(end_time-start_time)+" s"
